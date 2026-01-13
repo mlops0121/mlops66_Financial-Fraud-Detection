@@ -1,4 +1,4 @@
-[tool.ruff.lint]
+[lint]
 # Enable all `pydocstyle` rules, limiting to those that adhere to the
 # Google convention via `convention = "google"`, below.
 select = ["D"]
@@ -7,7 +7,7 @@ select = ["D"]
 # documentation for every function parameter.
 ignore = ["D417"]
 
-[tool.ruff.lint.pydocstyle]
+[lint.pydocstyle]
 convention = "google"
 
 # https://docs.astral.sh/ruff/settings/#lintpydocstyle
