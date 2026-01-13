@@ -1,0 +1,13 @@
+# https://docs.astral.sh/ruff/settings/#lintpydocstyle
+# NOTE: Can be added to a pyproject.toml file if desired. Kept seperate for now.
+[tool.ruff.lint]
+# Enable all `pydocstyle` rules, limiting to those that adhere to the
+# Google convention via `convention = "google"`, below.
+select = ["D"]
+
+# On top of the Google convention, disable `D417`, which requires
+# documentation for every function parameter.
+ignore = ["D417"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google
