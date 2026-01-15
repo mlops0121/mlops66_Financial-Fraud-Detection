@@ -8,7 +8,8 @@ Usage:
 
 import argparse
 import warnings
-warnings.filterwarnings('ignore')
+
+warnings.filterwarnings("ignore")
 
 from src.config.settings import Config
 from src.data.loader import DataLoader
@@ -20,14 +21,11 @@ def analyze_data(config):
     print("\n" + "=" * 60)
     print("     IEEE-CIS Fraud Detection - Data Quality Analysis")
     print("=" * 60)
-    
+
     loader = DataLoader()
-    df = loader.load_and_merge(
-        config.TRAIN_TRANSACTION,
-        config.TRAIN_IDENTITY
-    )
+    df = loader.load_and_merge(config.TRAIN_TRANSACTION, config.TRAIN_IDENTITY)
     loader.analyze(df)
-    
+
     print("\n✅ Analysis complete!")
     return df
 
@@ -37,11 +35,11 @@ def preprocess_train(config):
     print("\n" + "=" * 60)
     print("     IEEE-CIS Fraud Detection - Training Data Preprocessing")
     print("=" * 60)
-    
+
     preprocessor = FraudPreprocessor(config)
     data = preprocessor.fit_transform()
     preprocessor.save()
-    
+
     print("\n" + "=" * 60)
     print("              ✅ Preprocessing Complete!")
     print("=" * 60)
@@ -49,9 +47,11 @@ def preprocess_train(config):
     print(f"Validation set shape: {data['X_valid'].shape}")
     print(f"Test set shape: {data['X_test'].shape}")
     print(f"Number of features: {len(data['feature_columns'])}")
-    print(f"Categorical feature indices: {data['cat_idxs'][:5]}... (total {len(data['cat_idxs'])})")
+    print(
+        f"Categorical feature indices: {data['cat_idxs'][:5]}... (total {len(data['cat_idxs'])})"
+    )
     print(f"\nPreprocessor saved to: {config.PREPROCESSOR_PATH}")
-    
+
     return data, preprocessor
 
 
@@ -60,37 +60,42 @@ def preprocess_test(config):
     print("\n" + "=" * 60)
     print("     IEEE-CIS Fraud Detection - Test Data Preprocessing")
     print("=" * 60)
-    
+
     # Load saved preprocessor
     preprocessor = FraudPreprocessor(config)
     preprocessor.load()
-    
+
     # Process test data
     test_data = preprocessor.transform(
-        transaction_path=config.TEST_TRANSACTION,
-        identity_path=config.TEST_IDENTITY
+        transaction_path=config.TEST_TRANSACTION, identity_path=config.TEST_IDENTITY
     )
-    
+
     print("\n" + "=" * 60)
     print("              ✅ Test Data Preprocessing Complete!")
     print("=" * 60)
     print(f"\nTest set shape: {test_data['X_test'].shape}")
     print(f"Transaction ID count: {len(test_data['transaction_ids'])}")
-    
+
     return test_data
 
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(description='IEEE-CIS Data Preprocessing Tool')
-    parser.add_argument('--test', action='store_true', 
-                        help='Preprocess test data (for Kaggle submission)')
-    parser.add_argument('--analyze', action='store_true',
-                        help='Analyze data quality only, no preprocessing')
+    parser = argparse.ArgumentParser(description="IEEE-CIS Data Preprocessing Tool")
+    parser.add_argument(
+        "--test",
+        action="store_true",
+        help="Preprocess test data (for Kaggle submission)",
+    )
+    parser.add_argument(
+        "--analyze",
+        action="store_true",
+        help="Analyze data quality only, no preprocessing",
+    )
     args = parser.parse_args()
-    
+
     config = Config()
-    
+
     if args.analyze:
         analyze_data(config)
     elif args.test:
