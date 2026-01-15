@@ -1,8 +1,11 @@
+"""Tests for uncertainty analysis."""
+
 import pytest
 from src.evaluation.uncertainty import UncertaintyAnalyzer
 
 
 def test_uncertainty_analyzer():
+    """Test standard uncertainty analysis."""
     analyzer = UncertaintyAnalyzer()
     proba = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
     y_true = [0, 0, 0, 0, 1, 1, 1, 1, 1, 1]
@@ -14,6 +17,7 @@ def test_uncertainty_analyzer():
     assert results['uncertain_count'] == 5, f"Expected 5 uncertain, got {results['uncertain_count']}"
 
 def test_get_risk_level():
+    """Test risk level categorization."""
     analyzer = UncertaintyAnalyzer()
     proba = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
     y_true = [0, 0, 0, 0, 1, 1, 1, 1, 1, 1]

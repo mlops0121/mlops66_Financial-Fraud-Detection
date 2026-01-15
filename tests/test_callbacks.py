@@ -1,3 +1,4 @@
+"""Tests for callback functionality."""
 
 import pytest
 import os
@@ -7,12 +8,15 @@ from src.models.callbacks import CheckpointCallback
 
 # Mock trainer class to simulate TabNet trainer behavior
 class MockTrainer:
+    """Mock trainer class to simulate TabNet trainer behavior."""
     def __init__(self):
+        """Initialize mock trainer."""
         self.history = MagicMock()
         self.history.history = {'loss': [0.5, 0.4], 'auc': [0.7, 0.8]}
         self.best_cost = 0.35
 
     def save_model(self, path):
+        """Mock save_model method."""
         pass
 
 @pytest.fixture

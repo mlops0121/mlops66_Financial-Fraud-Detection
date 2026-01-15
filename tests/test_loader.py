@@ -1,3 +1,5 @@
+"""Tests for data loader."""
+
 # Testing src/data/loader.py
 import pytest
 from src.data.loader import DataLoader
@@ -5,22 +7,27 @@ from src.config.settings import Config
 
 @pytest.fixture
 def config():
+    """Create a Config instance."""
     return Config()
 
 @pytest.fixture
 def data_loader(config):
+    """Create a DataLoader instance."""
     return DataLoader(config)
 
 def test_init(data_loader):
+    """Test initialization."""
     assert data_loader.verbose is True
 
 def test_log(data_loader, capsys):
+    """Test logging output."""
     message = "Test log message"
     data_loader._log(message)
     captured = capsys.readouterr()
     assert message in captured.out
 
 def test_load_transaction(data_loader, tmp_path):
+    """Test loading transaction data."""
     # Create a temporary CSV file
     transaction_file = tmp_path / "transaction.csv"
     transaction_file.write_text("TransactionID,Amount\n1,100.0\n2,150.0")
@@ -30,6 +37,7 @@ def test_load_transaction(data_loader, tmp_path):
     assert list(df.columns) == ["TransactionID", "Amount"]
 
 def test_load_identity(data_loader, tmp_path):
+    """Test loading identity data."""
     # Create a temporary CSV file
     identity_file = tmp_path / "identity.csv"
     identity_file.write_text("TransactionID,DeviceType\n1,Mobile\n2,Desktop")
@@ -39,6 +47,7 @@ def test_load_identity(data_loader, tmp_path):
     assert list(df.columns) == ["TransactionID", "DeviceType"]
 
 def test_load_and_merge(data_loader, tmp_path):
+    """Test merging transaction and identity data."""
     # Create temporary CSV files
     transaction_file = tmp_path / "transaction.csv"
     transaction_file.write_text("TransactionID,Amount\n1,100.0\n2,150.0")
@@ -51,6 +60,7 @@ def test_load_and_merge(data_loader, tmp_path):
     assert list(df_merged.columns) == ["TransactionID", "Amount", "DeviceType"]
 
 def test_analyze(data_loader, tmp_path):
+    """Test data analysis output."""
     # Create temporary CSV files
     transaction_file = tmp_path / "transaction.csv"
     transaction_file.write_text("TransactionID,Amount\n1,100.0\n2,150.0")

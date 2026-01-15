@@ -1,3 +1,4 @@
+"""Tests for time feature extraction."""
 
 import pytest
 import pandas as pd

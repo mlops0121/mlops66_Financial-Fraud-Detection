@@ -1,3 +1,5 @@
+"""Tests for evaluation metrics."""
+
 import pytest
 import numpy as np
 from src.evaluation.metrics import Metrics
@@ -8,14 +10,17 @@ from sklearn.datasets import make_classification
 
 @pytest.fixture
 def metrics():
+    """Create a Metrics instance."""
     return Metrics()
 
 @pytest.fixture
 def dummy_data():
+    """Create dummy classification data."""
     X, y = make_classification(n_samples=100, n_features=20, n_informative=10, n_redundant=5, random_state=42)
     return X, y
 
 def test_evaluate_model(model, dummy_data):
+    """Test model evaluation metrics."""
     X, y = dummy_data
     model = TabNetClassifier()
     model.fit(X, y, max_epochs=1, patience=1, batch_size=16, virtual_batch_size=8, num_workers=0, drop_last=False)
@@ -25,6 +30,7 @@ def test_evaluate_model(model, dummy_data):
     assert 0.0 <= metrics.f1_score <= 1.0
 
 def test_feature_importance(metrics, dummy_data):
+    """Test feature importance calculation."""
     X, y = dummy_data
     model = TabNetClassifier()
     model.fit(X, y, max_epochs=1, patience=1, batch_size=16, virtual_batch_size=8, num_workers=0, drop_last=False)

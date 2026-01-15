@@ -1,3 +1,4 @@
+"""Tests for preprocessor module."""
 
 import pytest
 import pandas as pd
@@ -9,6 +10,7 @@ import os
 from src.features.preprocessor import FraudPreprocessor
 
 class MockConfig:
+    """Mock configuration."""
     RARE_CATEGORY_THRESHOLD = 50
     MISSING_THRESHOLD = 0.9
     USE_TIME_SPLIT = True
@@ -20,10 +22,12 @@ class MockConfig:
 
 @pytest.fixture
 def mock_config():
+    """Create a mock config."""
     return MockConfig()
 
 @pytest.fixture
 def sample_df():
+    """Create a sample DataFrame."""
     # Create a small DataFrame for testing
     np.random.seed(42)
     data = {
@@ -38,6 +42,7 @@ def sample_df():
 
 @pytest.fixture
 def preprocessor(mock_config):
+    """Create a FraudPreprocessor instance."""
     # Patch dependencies at the module level where they are instantiated
     with patch('src.features.preprocessor.DataLoader') as MockLoader, \
          patch('src.features.preprocessor.FeatureEncoder') as MockEncoder:

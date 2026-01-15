@@ -1,12 +1,16 @@
+"""Tests for configuration settings."""
+
 # Testing src/config/settings.py
 import pytest
 from src.config.settings import Config
 
 @pytest.fixture
 def config():
+    """Create a Config instance."""
     return Config()
 
 def test_config_attributes(config):
+    """Test standard config attributes."""
     assert config.TRAIN_TRANSACTION == 'data/train_transaction.csv'
     assert config.TRAIN_IDENTITY == 'data/train_identity.csv'
     assert config.TEST_TRANSACTION == 'data/test_transaction.csv'

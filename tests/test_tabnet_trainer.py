@@ -1,3 +1,4 @@
+"""Tests for TabNetTrainer."""
 
 import pytest
 import numpy as np
@@ -29,6 +30,7 @@ class MockConfig:
 
 @pytest.fixture
 def mock_config():
+    """Create a mock config."""
     return MockConfig()
 
 @pytest.fixture
