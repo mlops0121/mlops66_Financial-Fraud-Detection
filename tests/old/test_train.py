@@ -32,7 +32,6 @@ class MockConfig:
     BATCH_SIZE = 32
     CHECKPOINT_DIR = 'checkpoints'
 
-
 @pytest.fixture
 def dummy_data():
     """Create dummy preprocessed data for testing."""
@@ -46,7 +45,6 @@ def dummy_data():
         'cat_idxs': [],
         'cat_dims': []
     }
-
 @pytest.fixture
 def trainer(dummy_data):
     """Fixture for TabNetTrainer with mock config and dummy data."""
@@ -62,30 +60,32 @@ def test_init(trainer):
     assert trainer.data['y_valid'].shape == (20,)
     assert trainer.data['cat_idxs'] == []
     assert trainer.data['cat_dims'] == []
-
-
+    
 def test_create_model(trainer):
     model = trainer._create_model()
     assert model is not None
-    assert isinstance(model, torch.nn.Module)
-    assert model.device == trainer.config.DEVICE
+    assert model.n_d == trainer.config.N_D
+    assert model.n_a == trainer.config.N_A
+    assert model.n_steps == trainer.config.N_STEPS
+    assert model.gamma == trainer.config.GAMMA
+    assert model.lambda_sparse == trainer.config.LAMBDA_SPARSE
+    assert model.device_name == trainer.config.DEVICE
 
 def test_train(trainer):
-    with patch.object(trainer, '_create_model', wraps=trainer._create_model) as mock_create_model:
-        trained_model = trainer.train()
-        assert trained_model is not None
-        assert isinstance(trained_model, torch.nn.Module)
-        mock_create_model.assert_called_once()
+    with patch('src.models.tabnet_trainer.find_latest_checkpoint', return_value=None):
+        model = trainer.train()
+        assert model is not None
+        assert isinstance(model, torch.nn.Module)
+        assert model.device == trainer.config.DEVICE
+        assert model.n_d == trainer.config.N_D
+        assert model.n_a == trainer.config.N_A
+        assert model.n_steps == trainer.config.N_STEPS
+        assert model.gamma == trainer.config.GAMMA
+        assert model.lambda_sparse == trainer.config.LAMBDA_SPARSE
+        assert model.device_name == trainer.config.DEVICE
+        assert trainer.config.RESUME_TRAINING == False
         checkpoint_dir = Path(trainer.config.CHECKPOINT_DIR) / 'tabnet_model_final.zip'
         assert checkpoint_dir.exists(), f"Checkpoint not found at {checkpoint_dir}"
-
-        if trainer.config.RESUME_TRAINING:
-            checkpoint_path, last_epoch = find_latest_checkpoint(str(trainer.config.CHECKPOINT_DIR))
-            if checkpoint_path:
-                assert last_epoch < trainer.config.MAX_EPOCHS
-                assert trained_model is not None
-        else:
-            assert trained_model is not None
 
 def test_log_function(trainer, capsys):
     message = "Test log message"
@@ -94,9 +94,3 @@ def test_log_function(trainer, capsys):
     trainer._log(message)
     captured = capsys.readouterr()
     assert message in captured.out
-
-
-        
-
-
-            
