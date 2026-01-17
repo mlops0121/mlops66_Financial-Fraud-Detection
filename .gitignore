@@ -3,3 +3,35 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# Data directory
+data/
+
+# Model files and checkpoints
+checkpoints/
+*.pkl
+*.zip
+*.pt
+*.pth
+
+# Output files
+submission.csv
+report.html
+
+# Environment files
+.env
+.venv
+env/
+venv/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+

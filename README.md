@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# mlops66_Financial-Fraud-Detection
-=======
 # IEEE-CIS Fraud Detection with TabNet
 
 A financial fraud detection system using TabNet deep learning model for the [IEEE-CIS Fraud Detection Kaggle Competition](https://www.kaggle.com/c/ieee-fraud-detection).
@@ -113,7 +110,7 @@ Modify parameters in `src/config/settings.py`:
 |-----------|---------|-------------|
 | `MAX_EPOCHS` | 100 | Maximum training epochs |
 | `PATIENCE` | 10 | Early stopping patience |
-| `BATCH_SIZE` | 1024 | Batch size |
+| `BATCH_SIZE` | 8192 | Batch size |
 | `CHECKPOINT_EVERY` | 10 | Checkpoint save interval |
 | `RESUME_TRAINING` | True | Resume from checkpoint |
 
@@ -125,4 +122,4 @@ Modify parameters in `src/config/settings.py`:
 ## 📝 License
 
 MIT License
->>>>>>> feb34cc (initial commit)
+
