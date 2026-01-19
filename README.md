@@ -15,6 +15,7 @@ A financial fraud detection system using TabNet deep learning model for the
 
 ## 📁 Project Structure
 
+```bash
 mlops66_Financial-Fraud-Detection/
 ├── train.py # Training entry point
 ├── predict.py # Prediction entry point (Kaggle submission)
