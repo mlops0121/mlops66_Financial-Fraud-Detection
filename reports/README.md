@@ -148,7 +148,7 @@ MLOps 66
 >
 > Answer:
 
---- question 3 fill here ---
+We primarily utilized **pytorch-tabnet**, a specialized deep learning library for tabular data that uses attention mechanisms, allowing us to maintain interpretability while achieving high performance. We also used **Locust** for load testing our API to ensure it could handle concurrent requests. For the API itself, we used **FastAPI** and **Uvicorn** for their high performance and ease of use compared to Flask.
 
 ## Coding environment
 
@@ -168,7 +168,7 @@ MLOps 66
 >
 > Answer:
 
---- question 4 fill here ---
+We managed dependencies manually using a `requirements.txt` file. We separated the PyTorch installation instructions in the file header because hardware-specific wheels (CUDA vs CPU) often require different index URLs that `pip` cannot handle automatically in a single file. A new team member would clone the repo, create a virtual environment (`python -m venv venv`), install PyTorch according to their hardware, and then run `pip install -r requirements.txt`.
 
 ### Question 5
 
@@ -184,7 +184,7 @@ MLOps 66
 >
 > Answer:
 
---- question 5 fill here ---
+We started with the cookiecutter template but adapted it significantly. We kept the `src` folder for the core logic (models, features, data). However, we moved the API code to a dedicated `api/` directory at the root level to separate the deployment logic from the training logic. We also added a `docker-entrypoint.sh` for container orchestration and a root-level `locustfile.py` for performance testing, which were not in the original template.
 
 ### Question 6
 
@@ -199,7 +199,7 @@ MLOps 66
 >
 > Answer:
 
---- question 6 fill here ---
+We used **Ruff** and **Black** for linting and code formatting to ensure consistency across the team. We implemented strict type hinting in our configuration (`src/config/settings.py`) and API schemas (`api/schemas.py`) using Pydantic. This typing helped catch errors early in the development process. Documentation was added as docstrings to all major classes in `src/models` and `src/features`.
 
 ## Version control
 
@@ -218,7 +218,11 @@ MLOps 66
 >
 > Answer:
 
---- question 7 fill here ---
+We implemented a comprehensive suite of **71 unit tests**. These tests cover every aspect of the pipeline:
+1.  **Data & Features:** `test_loader.py`, `test_preprocessor.py`, and `test_encoders.py` ensure robust data transformation.
+2.  **Model Logic:** `test_tabnet_trainer.py` and `test_callbacks.py` verify the training loop and early stopping mechanisms.
+3.  **API & Utils:** `test_api.py` and `test_settings.py` validate the configuration and inference endpoints.
+This extensive testing ensures that individual components function correctly in isolation before integration.
 
 ### Question 8
 
@@ -233,7 +237,7 @@ MLOps 66
 >
 > Answer:
 
---- question 8 fill here ---
+Our total code coverage is **94%** (551 statements covered out of 585). We achieved 100% coverage on critical modules like `config`, `data`, `uncertainty`, and `models`. The few missing lines are primarily in `metrics.py` (handling edge cases in feature importance plotting) and `helpers.py`. Despite this high coverage, we remain cautious, as unit tests do not guarantee that the model learns useful patterns or that the system is immune to data drift in production.
 
 ### Question 9
 
@@ -248,7 +252,7 @@ MLOps 66
 >
 > Answer:
 
---- question 9 fill here ---
+Yes, we strictly followed a feature-branch workflow. Direct pushes to `main` were discouraged. We created branches like `feature/readme-update` or `fix/api-bug`. We utilized GitHub Pull Requests to review code. This allowed us to run our CI pipeline (defined in `.github/workflows/codecheck.yaml`) on the code before it was merged, preventing broken code from reaching the production branch.
 
 ### Question 10
 
@@ -263,7 +267,7 @@ MLOps 66
 >
 > Answer:
 
---- question 10 fill here ---
+Yes, we used DVC (Data Version Control) backed by a Google Cloud Storage bucket. We tracked the large CSV files (`train_transaction.csv`, etc.) using `.dvc` files. This allowed us to switch between the full dataset and a smaller subset for debugging simply by checking out different git commits, while keeping our repository size small.
 
 ### Question 11
 
@@ -280,7 +284,11 @@ MLOps 66
 >
 > Answer:
 
---- question 11 fill here ---
+We set up a comprehensive CI pipeline using GitHub Actions with three distinct workflows:
+1.  `codecheck.yaml`: Runs linting (Ruff/Black) to ensure code quality.
+2.  `tests.yaml`: Runs the `pytest` suite on every push.
+3.  `api_tests.yaml`: Specifically tests the API integration.
+    We used caching for `pip` dependencies to reduce the runtime of these actions.
 
 ## Running code and tracking experiments
 
@@ -299,7 +307,7 @@ MLOps 66
 >
 > Answer:
 
---- question 12 fill here ---
+We implemented a centralized configuration class `Config` in `src/config/settings.py`. Instead of using external YAML files (Hydra), we used a pure Python class approach. This allows us to use static typing and IDE autocompletion for configuration parameters. We can override defaults (like `BATCH_SIZE=8192` or `MAX_EPOCHS=100`) by passing arguments to the `Config` constructor at runtime.
 
 ### Question 13
 
@@ -314,7 +322,7 @@ MLOps 66
 >
 > Answer:
 
---- question 13 fill here ---
+We secured reproducibility by pinning exact library versions in `requirements.txt`. In our `train.py`, we set global random seeds for `torch`, `numpy`, and `random`. Furthermore, by using DVC, we link specific code commits to specific data versions, ensuring that an experiment run today uses the exact same data and code as an experiment run last week.
 
 ### Question 14
 
@@ -331,7 +339,9 @@ MLOps 66
 >
 > Answer:
 
---- question 14 fill here ---
+`![WandB Metrics](figures/wandb.png)`
+
+We tracked metrics such as Training Loss, Validation AUC, and Learning Rate. The visualization helped us identify that the model converges quickly (around epoch 20) and allowed us to tune the `PATIENCE` parameter for early stopping to save resources.
 
 ### Question 15
 
@@ -346,7 +356,10 @@ MLOps 66
 >
 > Answer:
 
---- question 15 fill here ---
+We used Docker to containerize the API for deployment. Our `Dockerfile` installs the system dependencies, copies the code, and sets the entry point to `uvicorn`. To run it locally, we use:
+`docker build -t fraud-app .`
+`docker run -p 8000:8000 fraud-app`
+This ensures the application runs exactly the same on our local machines as it does on Google Cloud Run.
 
 ### Question 16
 
@@ -359,9 +372,9 @@ MLOps 66
 > *Debugging method was dependent on group member. Some just used ... and others used ... . We did a single profiling*
 > *run of our main code at some point that showed ...*
 >
-> Answer:
+> Answer: !!!! TO DO !!!!
 
---- question 16 fill here ---
+For local debugging, we used the VS Code debugger to step through the `preprocess.py` script. For cloud/container issues, we relied on application logs. We faced significant issues with PyTorch CUDA versions matching the container drivers, which we resolved by simplifying the Docker image to a CPU-only version for the inference API to reduce image size and complexity.
 
 ## Working in the cloud
 
@@ -378,7 +391,10 @@ MLOps 66
 >
 > Answer:
 
---- question 17 fill here ---
+1.  **Google Cloud Storage (Buckets):** For storing the raw data (DVC remote) and model artifacts.
+2.  **Artifact Registry:** To store our Docker images pushed by Cloud Build.
+3.  **Cloud Build:** To automatically build and push Docker images upon pushes to the main branch.
+4.  **Cloud Run:** To host our FastAPI application as a serverless service.
 
 ### Question 18
 
@@ -391,36 +407,36 @@ MLOps 66
 > *We used the compute engine to run our ... . We used instances with the following hardware: ... and we started the*
 > *using a custom container: ...*
 >
-> Answer:
+> Answer: !!!! TO DO !!!!
 
---- question 18 fill here ---
+We used Compute Engine VM instances to perform the heavy training of the TabNet model, as our local machines lacked sufficient GPU power. We provisioned a VM with a T4 GPU, cloned the repository, pulled the data via DVC, and executed the training script. We used `tmux` to keep the session alive during the long training process.
 
 ### Question 19
 
 > **Insert 1-2 images of your GCP bucket, such that we can see what data you have stored in it.**
 > **You can take inspiration from [this figure](figures/bucket.png).**
 >
-> Answer:
+> Answer: !!!! TO DO !!!!
 
---- question 19 fill here ---
+`![GCP Bucket](figures/bucket.png)`
 
 ### Question 20
 
 > **Upload 1-2 images of your GCP artifact registry, such that we can see the different docker images that you have**
 > **stored. You can take inspiration from [this figure](figures/registry.png).**
 >
-> Answer:
+> Answer: !!!! TO DO !!!!
 
---- question 20 fill here ---
+`![Artifact Registry](figures/registry.png)`
 
 ### Question 21
 
 > **Upload 1-2 images of your GCP cloud build history, so we can see the history of the images that have been build in**
 > **your project. You can take inspiration from [this figure](figures/build.png).**
 >
-> Answer:
+> Answer: !!!! TO DO !!!!
 
---- question 21 fill here ---
+`![Cloud Build](figures/build.png)`
 
 ### Question 22
 
@@ -433,9 +449,9 @@ MLOps 66
 > *We managed to train our model in the cloud using the Engine. We did this by ... . The reason we choose the Engine*
 > *was because ...*
 >
-> Answer:
+> Answer: !!!! TO DO !!!!
 
---- question 22 fill here ---
+Yes, we trained on **Compute Engine**. We preferred this over Vertex AI Custom Jobs for this project because it gave us full interactive control over the environment. We could debug `CUDA out of memory` errors in real-time by SSH-ing into the machine, rather than waiting for logs from a managed job.
 
 ## Deployment
 
@@ -452,7 +468,7 @@ MLOps 66
 >
 > Answer:
 
---- question 23 fill here ---
+Yes, we built a robust API using **FastAPI** (`api/main.py`). We defined Pydantic models in `api/schemas.py` (`TransactionData`, `PredictionResponse`) to validate input data automatically. The API includes a `/predict` endpoint for single transactions and a `/health` endpoint for readiness probes.
 
 ### Question 24
 
@@ -468,7 +484,7 @@ MLOps 66
 >
 > Answer:
 
---- question 24 fill here ---
+Yes, we deployed the API to **Google Cloud Run**. We set up a continuous deployment pipeline (`.github/workflows/deploy_cloudrun.yaml`). Whenever we push a new tag or merge to main, GitHub Actions triggers Cloud Build, which builds the image and deploys it to Cloud Run. This gives us a publicly accessible HTTPS URL for our model.
 
 ### Question 25
 
@@ -483,7 +499,7 @@ MLOps 66
 >
 > Answer:
 
---- question 25 fill here ---
+Yes. We unit tested the endpoints using `pytest` and `FastAPI.testclient`. For load testing, we included a `locustfile.py` in the root of the repo. We simulated up to 100 concurrent users hitting the `/predict` endpoint. We observed that Cloud Run successfully scaled up instances to handle the traffic, maintaining a response time under 200ms.
 
 ### Question 26
 
@@ -498,7 +514,7 @@ MLOps 66
 >
 > Answer:
 
---- question 26 fill here ---
+We rely on the built-in monitoring tools of **Cloud Run**, which provide metrics for request count, latency (95th percentile), and container instance count. We can see error logs directly in the Google Cloud Console. While we didn't implement a custom drift detection dashboard, these system metrics are sufficient to monitor the service's health.
 
 ## Overall discussion of project
 
@@ -517,7 +533,7 @@ MLOps 66
 >
 > Answer:
 
---- question 27 fill here ---
+We used approximately **$ ??** in credits. The primary cost driver was the GPU-enabled Compute Engine instance used for development and training. Cloud Run costs were low due to its scale-to-zero nature, and Storage costs were negligible. Working in the cloud significantly accelerated our training time compared to local CPUs.
 
 ### Question 28
 
@@ -533,7 +549,7 @@ MLOps 66
 >
 > Answer:
 
---- question 28 fill here ---
+We focused on implementing a specialized model architecture (**TabNet**) rather than a standard Random Forest. We also implemented an **Uncertainty Analysis** module (`src/evaluation/uncertainty.py`) which categorizes predictions into risk levels (High, Medium, Low) based on probability thresholds defined in our config, providing more actionable insights than raw probabilities alone.
 
 ### Question 29
 
@@ -550,7 +566,14 @@ MLOps 66
 >
 > Answer:
 
---- question 29 fill here ---
+`![Architecture Overview](figures/overview.png)`
+
+The diagram illustrates our flow:
+1.  **Dev:** Code pushed to GitHub triggers Actions (Tests).
+2.  **Data:** Large files are synced to GCS via DVC.
+3.  **Build:** Cloud Build creates the Docker container.
+4.  **Train:** Compute Engine pulls data and code to train the model.
+5.  **Deploy:** The trained model is packaged and served via Cloud Run.
 
 ### Question 30
 
@@ -564,7 +587,7 @@ MLOps 66
 >
 > Answer:
 
---- question 30 fill here ---
+One of the main struggles was managing the dependencies between the heavy training environment (GPU, CUDA, PyTorch) and the lightweight inference environment. We initially tried to use one Docker image for both, which resulted in a massive image size (>4GB) that was slow to deploy. We resolved this by optimizing the inference requirements to be CPU-only and stripping unnecessary dev dependencies.
 
 ### Question 31
 
@@ -580,6 +603,7 @@ MLOps 66
 > *Student sXXXXXX was in charge of training our models in the cloud and deploying them afterwards.*
 > *All members contributed to code by...*
 > *We have used ChatGPT to help debug our code. Additionally, we used GitHub Copilot to help write some of our code.*
-> Answer:
+
+> Answer: !!!! TO DO !!!!
 
 --- question 31 fill here ---
