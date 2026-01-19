@@ -1,3 +1,5 @@
+"""FastAPI application for fraud detection predictions."""
+
 from fastapi import FastAPI
 from src.config.settings import Config
 from src.features.preprocessor import FraudPreprocessor
@@ -8,14 +10,13 @@ app = FastAPI(title="Fraud Detection API", version="1.0")
 
 @app.get("/")
 def root():
+    """Return the API health status."""
     return {"status": "running"}
 
 
 @app.post("/predict_test")
 def predict_test(limit: int = 5):
-    """
-    Runs preprocessing on the Kaggle test set and returns the first N predictions.
-    """
+    """Run preprocessing on the Kaggle test set and return the first N predictions."""
     config = Config()
 
     # Load preprocessor + model (same as predict.py)
