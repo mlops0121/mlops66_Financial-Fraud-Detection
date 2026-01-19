@@ -16,35 +16,31 @@ A financial fraud detection system using TabNet deep learning model for the
 ## 📁 Project Structure
 
 ```bash
-mlops66_Financial-Fraud-Detection/
-├── train.py # Training entry point
-├── predict.py # Prediction entry point (Kaggle submission)
-├── preprocess.py # Data preprocessing entry point
-├── api/ # FastAPI application
-│ ├── init.py
-│ ├── main.py
-│ └── schemas.py
-├── src/ # Modular source code
-│ ├── config/ # Configuration module
-│ │ └── settings.py
-│ ├── data/ # Data loading module
-│ │ └── loader.py
-│ ├── features/ # Feature engineering module
-│ │ ├── preprocessor.py
-│ │ ├── encoders.py
-│ │ └── time_features.py
-│ ├── models/ # Model module
-│ │ ├── tabnet_trainer.py
-│ │ └── callbacks.py
-│ ├── evaluation/ # Evaluation module
-│ │ ├── metrics.py
-│ │ └── uncertainty.py
-│ └── utils/ # Utility module
-│ └── helpers.py
-├── data/ # Dataset directory (Kaggle files go here)
-├── checkpoints/ # Model checkpoints
-├── ieee_cis_preprocessor.pkl
-└── tabnet_fraud_model.zip
+├── api/                       # FastAPI application
+│   ├── main.py                # Entry point for the API application
+│   └── schemas.py             # Pydantic models for data validation
+├── reports/                   # Reporting modules
+│   └── report.py              # Script to generate performance reports
+├── src/                       # Modular source code
+│   ├── config/                # Configuration module (settings.py)
+│   ├── data/                  # Data loading module (loader.py)
+│   ├── evaluation/            # Evaluation module (metrics & uncertainty)
+│   ├── features/              # Feature engineering (preprocessor, encoders, time_features)
+│   ├── models/                # Model architecture & training (TabNet, callbacks)
+│   └── utils/                 # Utility module (helpers.py)
+├── tests/                     # Unit & Integration tests (Pytest)
+├── data/                      # Dataset directory (Kaggle files go here)
+├── checkpoints/               # Model checkpoints storage
+├── Dockerfile                 # Docker configuration for containerization
+├── docker-entrypoint.sh       # Entry script for Docker container
+├── locustfile.py              # Load testing configuration (Locust)
+├── train.py                   # Training entry point
+├── predict.py                 # Prediction entry point (Kaggle submission)
+├── preprocess.py              # Data preprocessing entry point
+├── pyproject.toml             # Project configuration & dependencies
+├── requirements.txt           # Production dependencies
+├── ieee_cis_preprocessor.pkl  # Serialized preprocessor object
+└── tabnet_fraud_model.zip     # Compressed model artifact
 ```
 shell
 Copy code
