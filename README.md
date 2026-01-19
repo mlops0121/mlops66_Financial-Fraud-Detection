@@ -1,8 +1,6 @@
-
 # IEEE-CIS Fraud Detection with TabNet
 
-A financial fraud detection system using TabNet deep learning model for the
-[IEEE-CIS Fraud Detection Kaggle Competition](https://www.kaggle.com/c/ieee-fraud-detection).
+A financial fraud detection system using TabNet deep learning model for the [IEEE-CIS Fraud Detection Kaggle Competition](https://www.kaggle.com/c/ieee-fraud-detection).
 
 ## ✨ Features
 
@@ -11,114 +9,225 @@ A financial fraud detection system using TabNet deep learning model for the
 - 🔄 **Checkpoint Support** - Resume training from interruption
 - 📈 **Uncertainty Analysis** - Prediction confidence stratification
 - 🎯 **Class Imbalance Handling** - Automatic class weight calculation
-- 🌐 **FastAPI Inference API (M22)** - Run inference through a simple API endpoint
+- ⚙️ **Hydra Configuration** - Flexible YAML-based configuration management
+- 📝 **Weights & Biases** - Experiment tracking and hyperparameter sweeps
+
 
 ## 📁 Project Structure
 
+```
 mlops66_Financial-Fraud-Detection/
-├── train.py # Training entry point
-├── predict.py # Prediction entry point (Kaggle submission)
-├── preprocess.py # Data preprocessing entry point
-├── api/ # FastAPI application
-│ ├── init.py
-│ ├── main.py
-│ └── schemas.py
-├── src/ # Modular source code
-│ ├── config/ # Configuration module
-│ │ └── settings.py
-│ ├── data/ # Data loading module
-│ │ └── loader.py
-│ ├── features/ # Feature engineering module
-│ │ ├── preprocessor.py
-│ │ ├── encoders.py
-│ │ └── time_features.py
-│ ├── models/ # Model module
-│ │ ├── tabnet_trainer.py
-│ │ └── callbacks.py
-│ ├── evaluation/ # Evaluation module
-│ │ ├── metrics.py
-│ │ └── uncertainty.py
-│ └── utils/ # Utility module
-│ └── helpers.py
-├── data/ # Dataset directory (Kaggle files go here)
-├── checkpoints/ # Model checkpoints
-├── ieee_cis_preprocessor.pkl
-└── tabnet_fraud_model.zip
+├── train.py              # Training entry point (Hydra + W&B)
+├── predict.py            # Prediction entry point
+├── preprocess.py         # Data preprocessing entry point
+├── profile_training.py   # Performance profiling script
+├── configs/              # Hydra configuration files
+│   ├── config.yaml       # Main configuration
+│   ├── model/tabnet.yaml # Model hyperparameters
+│   ├── training/default.yaml
+│   └── sweep.yaml        # W&B hyperparameter sweep
+├── src/                  # Modular source code
+│   ├── config/           # Configuration module
+│   ├── data/             # Data loading module
+│   ├── features/         # Feature engineering module
+│   ├── models/           # Model module
+│   ├── evaluation/       # Evaluation module
+│   └── utils/            # Utilities (logging, profiling, wandb)
+├── data/                 # Dataset directory (DVC tracked)
+├── checkpoints/          # Model checkpoints
 
-shell
-Copy code
+└── data.dvc              # DVC data tracking
+```
 
 ## 🚀 Quick Start
 
-### 1) Environment Setup
+### 1. Environment Setup
 
 ```bash
+conda create -n mlops python=3.10
+conda activate mlops
 pip install -r requirements.txt
-2) Data Preparation
-Download the Kaggle IEEE-CIS dataset and place these files in data/:
+```
 
-train_transaction.csv
+### 2. Data Preparation
 
-train_identity.csv
+Place IEEE-CIS dataset in `data/` directory, or use DVC:
 
-test_transaction.csv
+```bash
+dvc pull  # If remote is configured
+```
 
-test_identity.csv
+### 3. Run Training
 
-sample_submission.csv
+```bash
+# View all configuration options
+python train.py --help
 
-3) Run
-bash
-Copy code
-# Analyze data quality (optional)
-python preprocess.py --analyze
-
-# Preprocess data
-python preprocess.py
-
-# Train model
+# Train with default config
 python train.py
 
-# Predict (Kaggle submission)
+# Train with custom parameters
+python train.py training.max_epochs=50 model.n_steps=5
+
+# Train with W&B logging
+python train.py wandb.enabled=true
+```
+
+### 4. Data Preprocessing (Optional)
+
+```bash
+# Analyze data quality
+python preprocess.py --analyze
+
+# Preprocess training data
+python preprocess.py
+
+# Preprocess test data (for Kaggle submission)
+python preprocess.py --test
+```
+
+### 5. Prediction
+
+```bash
 python predict.py
-🌐 FastAPI Inference API (M22)
-Start the server
-bash
-Copy code
-python -m uvicorn api.main:app --reload
-Swagger docs:
+```
 
-http://127.0.0.1:8000/docs
 
-Run inference (demo endpoint)
-This endpoint runs preprocessing + TabNet inference on the Kaggle test set and returns the first limit predictions:
+## ⚙️ Configuration
 
-h
-Copy code
-POST /predict_test?limit=5
-Example response includes:
+Configuration is managed via Hydra YAML files in `configs/`:
 
-TransactionID
+### Model Parameters (`configs/model/tabnet.yaml`)
 
-fraud_probability
-
-is_fraud
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `MAX_EPOCHS` | 100 | Maximum training epochs |
-| `PATIENCE` | 10 | Early stopping patience |
-| `BATCH_SIZE` | 8192 | Batch size |
-| `CHECKPOINT_EVERY` | 10 | Checkpoint save interval |
-| `RESUME_TRAINING` | True | Resume from checkpoint |
+| `n_d` | 48 | Decision layer width |
+| `n_a` | 48 | Attention layer width |
+| `n_steps` | 4 | Number of decision steps |
+| `gamma` | 1.5 | Feature reuse coefficient |
+| `lambda_sparse` | 0.001 | Sparsity regularization |
 
-⚙️ Configuration
-Modify parameters in src/config/settings.py.
+### Training Parameters (`configs/training/default.yaml`)
 
-📊 Model Performance
-Test AUC: ~0.81
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `max_epochs` | 100 | Maximum training epochs |
+| `patience` | 10 | Early stopping patience |
+| `batch_size` | 8192 | Batch size |
+| `learning_rate` | 0.005 | Learning rate |
+| `checkpoint_every` | 10 | Checkpoint save interval |
 
-Top 5 Features: V230, P_emaildomain, M6, id_11, V154
+### Override Examples
 
-📝 License
+```bash
+# Change epochs and batch size
+python train.py training.max_epochs=200 training.batch_size=4096
+
+# Use different model config
+python train.py model=tabnet model.n_steps=6
+```
+
+## 📊 Experiment Tracking (W&B)
+
+```bash
+# Login to W&B
+wandb login
+
+# Run with experiment tracking
+python train.py wandb.enabled=true wandb.project=my-fraud-detection
+
+# Hyperparameter sweep
+wandb sweep configs/sweep.yaml
+wandb agent <sweep-id>
+```
+
+## 🔧 Data Version Control (DVC)
+
+```bash
+# Initialize DVC (already done)
+dvc init
+
+# Add data to DVC
+dvc add data/
+
+# Configure remote storage
+dvc remote add -d myremote gs://your-bucket/dvc-storage
+
+# Push/pull data
+dvc push
+dvc pull
+```
+
+## 📈 Profiling
+
+```bash
+# Quick profiling test
+python profile_training.py --dry-run
+
+# Full training profiling
+python profile_training.py
+```
+
+## ☁️ Deployment & API
+
+### 1. Docker (Recommended)
+
+Build and run the fraud detection API in a container:
+
+```bash
+# Build image
+docker build -t fraud-detection-api .
+
+# Run container (mounts data and model from local host for development)
+# Windows (PowerShell):
+docker run -p 8000:8000 -v ${PWD}:/app fraud-detection-api
+
+# Linux/Mac:
+docker run -p 8000:8000 -v $(pwd):/app fraud-detection-api
+```
+
+### 2. Standard API
+
+Run the FastAPI service locally:
+
+```bash
+uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+- **Health Check**: `http://localhost:8000/`
+- **Predict**: `http://localhost:8000/predict_test`
+
+### 3. ONNX High-Performance API
+
+For faster inference using ONNX Runtime:
+
+```bash
+# 1. Export model to ONNX
+python export_onnx.py
+
+# 2. Run ONNX API
+python onnx_api.py
+```
+
+- Server runs on `http://localhost:8001`
+- **Predict**: `POST /predict` (accepts feature dictionary)
+- **Batch Predict**: `POST /predict_batch`
+
+## 🧪 Testing & Validation
+
+```bash
+# Run unit and integration tests
+pytest
+
+# Run tests with coverage report
+pytest --cov=src tests/
+```
+
+## 📊 Model Performance
+
+- **Test AUC**: ~0.81
+- **Top 5 Features**: V230, P_emaildomain, M6, id_11, V154
+
+## 📝 License
+
 MIT License
-
