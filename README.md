@@ -102,6 +102,33 @@ Example response fields:
 - `fraud_probability`
 - `is_fraud`
 
+### 5. 🐳 Docker Support
+
+You can build and run the project inside a Docker container to ensure a consistent environment.
+```bash
+docker build -t fraud-detection-app .
+```
+```bash
+# Runs the API on port 8000
+docker run -p 8000:8000 fraud-detection-app
+```
+
+### 6. 🧪 Development & Testing
+
+Run Unit Tests: Ensure the logic works correctly by running the test suite:
+```bash
+pytest tests/
+```
+Run Load Tests (Locust): Simulate user traffic to test API performance:
+```bash
+# 1. Start the API first
+python -m uvicorn api.main:app --reload
+
+# 2. In a separate terminal, run Locust
+locust -f locustfile.py --host=[http://127.0.0.1:8000](http://127.0.0.1:8000)
+```
+Then open http://localhost:8089 in your browser.
+
 ## ⚙️ Configuration
 
 You can modify training parameters in `src/config/settings.py`.
