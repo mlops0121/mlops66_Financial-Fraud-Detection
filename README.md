@@ -18,6 +18,7 @@ A financial fraud detection system using TabNet deep learning model for the
 │   ├── main.py                # Entry point for the API application
 │   └── schemas.py             # Pydantic models for data validation
 ├── reports/                   # Reporting modules
+│   ├── figures/               # Generated plots and visualizations
 │   └── report.py              # Script to generate performance reports
 ├── src/                       # Modular source code
 │   ├── config/                # Configuration module (settings.py)
@@ -37,6 +38,7 @@ A financial fraud detection system using TabNet deep learning model for the
 ├── preprocess.py              # Data preprocessing entry point
 ├── pyproject.toml             # Project configuration & dependencies
 ├── requirements.txt           # Production dependencies
+├── requirements_tests.txt     # Development/Test dependencies
 ├── ieee_cis_preprocessor.pkl  # Serialized preprocessor object
 └── tabnet_fraud_model.zip     # Compressed model artifact
 ```
@@ -47,6 +49,8 @@ A financial fraud detection system using TabNet deep learning model for the
 
 Start by installing the required dependencies:
 ```bash
+python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
