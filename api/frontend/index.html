@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Fraud Detection Demo</title>
+</head>
+<body>
+  <h1>Fraud Detection API Demo</h1>
+
+  <label>Limit:</label>
+  <input id="limit" type="number" value="5" min="1" max="50" />
+
+  <button onclick="runPrediction()">Run prediction</button>
+
+  <pre id="output">Click the button to get predictions...</pre>
+
+  <script>
+    async function runPrediction() {
+      const limit = document.getElementById("limit").value;
+      const output = document.getElementById("output");
+      output.textContent = "Loading...";
+
+      try {
+        const res = await fetch(`http://127.0.0.1:8000/predict_test?limit=${limit}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" }
+        });
+
+        const data = await res.json();
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        output.textContent = "Error: " + err;
+      }
+    }
+  </script>
+</body>
+</html>
