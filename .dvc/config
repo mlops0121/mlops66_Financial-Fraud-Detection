@@ -1,5 +1,5 @@
 [core]
     autostage = true
-    remote = mygdrive
-['remote "mygdrive"']
-    url = gdrive://1o1rqbnGl_Csq3NwJRIf3yD0wW-IEDTo2
+    remote = local_backup
+['remote "local_backup"']
+    url = C:\Users\jingl\dvc_storage
