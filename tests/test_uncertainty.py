@@ -67,18 +67,18 @@ def test_analyze_counts(default_analyzer, predictions):
 
     result = default_analyzer.analyze(predictions, verbose=False)
 
-    assert result["high_risk_count"] == 2, (
-        f"Expected 2 high risk samples, got {result['high_risk_count']}"
-    )
-    assert result["medium_risk_count"] == 2, (
-        f"Expected 2 medium risk samples, got {result['medium_risk_count']}"
-    )
-    assert result["low_risk_count"] == 2, (
-        f"Expected 2 low risk samples, got {result['low_risk_count']}"
-    )
-    assert result["uncertain_count"] == 2, (
-        f"Expected 2 uncertain samples, got {result['uncertain_count']}"
-    )
+    assert (
+        result["high_risk_count"] == 2
+    ), f"Expected 2 high risk samples, got {result['high_risk_count']}"
+    assert (
+        result["medium_risk_count"] == 2
+    ), f"Expected 2 medium risk samples, got {result['medium_risk_count']}"
+    assert (
+        result["low_risk_count"] == 2
+    ), f"Expected 2 low risk samples, got {result['low_risk_count']}"
+    assert (
+        result["uncertain_count"] == 2
+    ), f"Expected 2 uncertain samples, got {result['uncertain_count']}"
 
 
 def test_analyze_with_labels_verbose(default_analyzer, predictions, labels, capsys):
@@ -87,12 +87,12 @@ def test_analyze_with_labels_verbose(default_analyzer, predictions, labels, caps
 
     captured = capsys.readouterr()
     assert "Uncertainty Analysis" in captured.out, "Should print header when verbose=True"
-    assert "Performance at Different Thresholds" in captured.out, (
-        "Should print threshold analysis when labels provided"
-    )
-    assert "Prediction Confidence Stratification" in captured.out, (
-        "Should print stratification details"
-    )
+    assert (
+        "Performance at Different Thresholds" in captured.out
+    ), "Should print threshold analysis when labels provided"
+    assert (
+        "Prediction Confidence Stratification" in captured.out
+    ), "Should print stratification details"
 
 
 def test_analyze_no_labels_verbose(default_analyzer, predictions, capsys):
@@ -101,9 +101,9 @@ def test_analyze_no_labels_verbose(default_analyzer, predictions, capsys):
 
     captured = capsys.readouterr()
     assert "Uncertainty Analysis" in captured.out
-    assert "Performance at Different Thresholds" not in captured.out, (
-        "Should NOT print threshold analysis without labels"
-    )
+    assert (
+        "Performance at Different Thresholds" not in captured.out
+    ), "Should NOT print threshold analysis without labels"
 
 
 def test_get_risk_level(default_analyzer, predictions):

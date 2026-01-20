@@ -60,9 +60,9 @@ def test_evaluate_model(trained_model, dummy_data):
     assert "auc" in metrics, "Metrics should include AUC"
     assert 0.0 <= metrics["auc"] <= 1.0, "AUC should be between 0 and 1"
     assert "confusion_matrix" in metrics, "Metrics should include confusion matrix"
-    assert metrics["proba"].shape[0] == X.shape[0], (
-        "Probability predictions should match number of samples"
-    )
+    assert (
+        metrics["proba"].shape[0] == X.shape[0]
+    ), "Probability predictions should match number of samples"
     assert metrics["preds"].shape[0] == X.shape[0], "Predictions should match number of samples"
 
 
@@ -74,16 +74,16 @@ def test_feature_importance(trained_model, dummy_data):
     importance_df = get_feature_importance(trained_model, feature_names)
 
     assert importance_df is not None, "Feature importance should not be None"
-    assert len(importance_df) == X.shape[1], (
-        "Feature importance should have an entry for each feature"
-    )
-    assert "importance" in importance_df.columns, (
-        "Feature importance DataFrame should have 'Importance' column"
-    )
+    assert (
+        len(importance_df) == X.shape[1]
+    ), "Feature importance should have an entry for each feature"
+    assert (
+        "importance" in importance_df.columns
+    ), "Feature importance DataFrame should have 'Importance' column"
     # Check if importance is numeric
-    assert np.issubdtype(importance_df["importance"].dtype, np.number), (
-        "Importance values should be numeric"
-    )
+    assert np.issubdtype(
+        importance_df["importance"].dtype, np.number
+    ), "Importance values should be numeric"
 
 
 def test_evaluate_model_integration(trained_model, dummy_data):
@@ -95,6 +95,6 @@ def test_evaluate_model_integration(trained_model, dummy_data):
 
     assert "feature_importance" in metrics, "Metrics should include feature importance"
     assert metrics["feature_importance"] is not None, "Feature importance should not be None"
-    assert len(metrics["feature_importance"]) == X.shape[1], (
-        "Feature importance should have an entry for each feature"
-    )
+    assert (
+        len(metrics["feature_importance"]) == X.shape[1]
+    ), "Feature importance should have an entry for each feature"
