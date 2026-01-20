@@ -53,7 +53,7 @@ def generate_drift_report():
     plt.grid(True, alpha=0.3)
 
     # 3. Save the plot
-    current_dir = os.getcwd()
+    current_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(current_dir, "reports", "figures")
     os.makedirs(output_dir, exist_ok=True)
 
