@@ -14,9 +14,9 @@ def test_default_initialization():
     # Check Path Configuration
     assert isinstance(config.PROJECT_ROOT, Path), "PROJECT_ROOT should be a Path object"
     assert config.DATA_DIR == config.PROJECT_ROOT / "data", "DATA_DIR default path mismatch"
-    assert (
-        config.CHECKPOINT_DIR == config.PROJECT_ROOT / "checkpoints"
-    ), "CHECKPOINT_DIR default path mismatch"
+    assert config.CHECKPOINT_DIR == config.PROJECT_ROOT / "checkpoints", (
+        "CHECKPOINT_DIR default path mismatch"
+    )
 
     # Check Preprocessing Parameters
     assert config.MISSING_THRESHOLD == 0.9, "Default MISSING_THRESHOLD should be 0.9"

@@ -53,9 +53,9 @@ def test_missing_time_column():
     df = pd.DataFrame({"A": [1, 2, 3]})
     processed_df = extract_time_features(df.copy(), time_col="TransactionDT", verbose=False)
 
-    assert list(processed_df.columns) == [
-        "A"
-    ], "DataFrame columns should remain unchanged when time column is missing"
+    assert list(processed_df.columns) == ["A"], (
+        "DataFrame columns should remain unchanged when time column is missing"
+    )
 
 
 def test_hour_extraction(sample_df):
@@ -80,24 +80,24 @@ def test_is_working_hour(sample_df):
     df = extract_time_features(sample_df.copy(), verbose=False)
 
     # 9 AM -> Working (1)
-    assert (
-        df.loc[1, "is_working_hour"] == 1
-    ), f"Hour {df.loc[1, 'hour']} should be considered a working hour"
+    assert df.loc[1, "is_working_hour"] == 1, (
+        f"Hour {df.loc[1, 'hour']} should be considered a working hour"
+    )
 
     # 15 PM -> Working (1)
-    assert (
-        df.loc[2, "is_working_hour"] == 1
-    ), f"Hour {df.loc[2, 'hour']} should be considered a working hour"
+    assert df.loc[2, "is_working_hour"] == 1, (
+        f"Hour {df.loc[2, 'hour']} should be considered a working hour"
+    )
 
     # 19 PM -> Not Working (0)
-    assert (
-        df.loc[3, "is_working_hour"] == 0
-    ), f"Hour {df.loc[3, 'hour']} should NOT be considered a working hour"
+    assert df.loc[3, "is_working_hour"] == 0, (
+        f"Hour {df.loc[3, 'hour']} should NOT be considered a working hour"
+    )
 
     # 00 AM -> Not Working (0)
-    assert (
-        df.loc[0, "is_working_hour"] == 0
-    ), f"Hour {df.loc[0, 'hour']} should NOT be considered a working hour"
+    assert df.loc[0, "is_working_hour"] == 0, (
+        f"Hour {df.loc[0, 'hour']} should NOT be considered a working hour"
+    )
 
 
 def test_day_of_week_and_weekend(sample_df):
@@ -133,9 +133,9 @@ def test_custom_time_column():
     df = pd.DataFrame({"custom_time": [3600, 7200]})
     processed_df = extract_time_features(df.copy(), time_col="custom_time", verbose=False)
 
-    assert (
-        "hour" in processed_df.columns
-    ), "Should successfully extract features from custom time column name"
-    assert (
-        processed_df.loc[0, "hour"] == 1
-    ), "Should correctly calculate hour from custom time column"
+    assert "hour" in processed_df.columns, (
+        "Should successfully extract features from custom time column name"
+    )
+    assert processed_df.loc[0, "hour"] == 1, (
+        "Should correctly calculate hour from custom time column"
+    )

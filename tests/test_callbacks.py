@@ -58,9 +58,9 @@ def test_no_save_on_intermediate_epoch(callback):
 
     # Check that directory is empty (scandir handles hidden files)
     files = list(os.scandir(callback.save_path))
-    assert (
-        len(files) == 0
-    ), f"Save directory should be empty for intermediate epochs, found: {[f.name for f in files]}"
+    assert len(files) == 0, (
+        f"Save directory should be empty for intermediate epochs, found: {[f.name for f in files]}"
+    )
 
 
 def test_save_on_correct_epoch(callback):

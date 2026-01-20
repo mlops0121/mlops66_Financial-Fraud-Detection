@@ -39,14 +39,14 @@ def sample_data(tmp_path):
 def test_init():
     """Test DataLoader initialization."""
     loader = DataLoader(verbose=False)
-    assert (
-        loader.verbose is False
-    ), "DataLoader verbose flag should be False when initialized with verbose=False"
+    assert loader.verbose is False, (
+        "DataLoader verbose flag should be False when initialized with verbose=False"
+    )
 
     loader_verbose = DataLoader(verbose=True)
-    assert (
-        loader_verbose.verbose is True
-    ), "DataLoader verbose flag should be True by default or when initialized with True"
+    assert loader_verbose.verbose is True, (
+        "DataLoader verbose flag should be True by default or when initialized with True"
+    )
 
 
 def test_load_transaction_success(loader, sample_data):
@@ -91,15 +91,15 @@ def test_load_and_merge(loader, sample_data):
 
     assert isinstance(merged_df, pd.DataFrame), "load_and_merge should return a DataFrame"
     assert merged_df.shape[0] == 3, f"Expected 3 rows in merged data, got {merged_df.shape[0]}"
-    assert (
-        "device_info" in merged_df.columns
-    ), "Merged data should contain identity columns (device_info)"
+    assert "device_info" in merged_df.columns, (
+        "Merged data should contain identity columns (device_info)"
+    )
 
     # Check left join behavior (TransactionID 3 has no identity info)
     row_3 = merged_df[merged_df["TransactionID"] == 3]
-    assert pd.isna(
-        row_3["device_info"].iloc[0]
-    ), "Expected NaN for missing identity match in left join"
+    assert pd.isna(row_3["device_info"].iloc[0]), (
+        "Expected NaN for missing identity match in left join"
+    )
 
 
 def test_load_and_merge_no_identity(loader, sample_data):
@@ -109,9 +109,9 @@ def test_load_and_merge_no_identity(loader, sample_data):
 
     assert isinstance(df, pd.DataFrame), "Should return DataFrame even without identity path"
     assert df.shape == (3, 4), f"Expected shape (3, 4) without merge, got {df.shape}"
-    assert (
-        "device_info" not in df.columns
-    ), "Result should not contain identity columns when identity_path is None"
+    assert "device_info" not in df.columns, (
+        "Result should not contain identity columns when identity_path is None"
+    )
 
 
 def test_analyze(loader, sample_data):

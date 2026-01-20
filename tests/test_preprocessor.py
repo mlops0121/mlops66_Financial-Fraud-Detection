@@ -103,12 +103,12 @@ def test_split_data_time(preprocessor, sample_df):
     X_train, X_valid, X_test, y_train, y_valid, y_test = preprocessor._split_data(sample_df)
 
     # Check shapes
-    assert (
-        len(X_train) + len(X_valid) + len(X_test) == 100
-    ), "Total samples should match original data"
-    assert (
-        len(y_train) + len(y_valid) + len(y_test) == 100
-    ), "Total labels should match original data"
+    assert len(X_train) + len(X_valid) + len(X_test) == 100, (
+        "Total samples should match original data"
+    )
+    assert len(y_train) + len(y_valid) + len(y_test) == 100, (
+        "Total labels should match original data"
+    )
 
     # With test_size=0.2 (20), valid_size=0.125 (of 80 -> 10)
     # Train: 70, Valid: 10, Test: 20
@@ -206,9 +206,9 @@ def test_transform(mock_optimize, mock_extract_time, preprocessor, sample_df):
     assert "X_test" in result, "Result should contain X_test"
     assert "transaction_ids" in result, "Result should contain transaction_ids"
     assert isinstance(result["X_test"], np.ndarray), "X_test should be a numpy array"
-    assert isinstance(
-        result["transaction_ids"], np.ndarray
-    ), "transaction_ids should be a numpy array"
+    assert isinstance(result["transaction_ids"], np.ndarray), (
+        "transaction_ids should be a numpy array"
+    )
     assert len(result["X_test"]) == 100, "X_test should have 100 rows"
     assert len(result["transaction_ids"]) == 100, "transaction_ids should have 100 rows"
 
@@ -238,7 +238,7 @@ def test_save_load(preprocessor, tmp_path):
 
     new_prep.load(path=str(save_path))
 
-    assert new_prep.drop_columns == [
-        "col_test_drop"
-    ], "Loaded drop_columns should match saved state"
+    assert new_prep.drop_columns == ["col_test_drop"], (
+        "Loaded drop_columns should match saved state"
+    )
     new_prep.encoder.load_state.assert_called_with({"mock_encoder_state": True})

@@ -28,12 +28,12 @@ def test_optimize_memory_dtypes():
     df_opt = optimize_memory(df.copy(), verbose=False)
 
     # Check dtypes
-    assert (
-        df_opt["float_col"].dtype == "float32"
-    ), f"Float64 should be converted to float32. Got {df_opt['float_col'].dtype}"
-    assert (
-        df_opt["int_col"].dtype == "int32"
-    ), f"Int64 should be converted to int32. Got {df_opt['int_col'].dtype}"
+    assert df_opt["float_col"].dtype == "float32", (
+        f"Float64 should be converted to float32. Got {df_opt['float_col'].dtype}"
+    )
+    assert df_opt["int_col"].dtype == "int32", (
+        f"Int64 should be converted to int32. Got {df_opt['int_col'].dtype}"
+    )
     assert df_opt["obj_col"].dtype == "object", "Object columns should remain unchanged"
 
 
@@ -110,9 +110,9 @@ def test_find_latest_checkpoint_success(tmp_path):
 
     assert epoch == 10, f"Should identify 10 as latest epoch, got {epoch}"
     assert path is not None, "Path should not be None"
-    assert path.endswith(
-        "checkpoint_epoch_10.zip"
-    ), f"Path should point to epoch 10 file, got {path}"
+    assert path.endswith("checkpoint_epoch_10.zip"), (
+        f"Path should point to epoch 10 file, got {path}"
+    )
     assert str(tmp_path) in path, "Path should be absolute/complete"
 
 

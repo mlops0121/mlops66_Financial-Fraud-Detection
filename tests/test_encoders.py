@@ -34,9 +34,9 @@ def test_identify_feature_types(encoder, dummy_df):
     )
 
     assert "cat1" in encoder.categorical_columns, "cat1 should be identified as categorical"
-    assert (
-        "cat2" in encoder.categorical_columns
-    ), "cat2 should be identified as categorical (low cardinality int)"
+    assert "cat2" in encoder.categorical_columns, (
+        "cat2 should be identified as categorical (low cardinality int)"
+    )
     assert "num1" in encoder.numerical_columns, "num1 should be identified as numerical"
     assert "num2" in encoder.categorical_columns, "num2 should be identified as categorical"
     assert "id" not in feature_cols, "id should be excluded from features"
@@ -80,20 +80,20 @@ def test_fit_transform(encoder, dummy_df):
 
     # Check encoding
     assert df_encoded["cat1"].dtype != "object"
-    assert len(encoder.label_encoders) == len(
-        encoder.categorical_columns
-    ), "Label encoders should be created for all categorical columns"
-    assert len(encoder.numerical_medians) == len(
-        encoder.numerical_columns
-    ), "Medians should be stored for all numerical columns"
+    assert len(encoder.label_encoders) == len(encoder.categorical_columns), (
+        "Label encoders should be created for all categorical columns"
+    )
+    assert len(encoder.numerical_medians) == len(encoder.numerical_columns), (
+        "Medians should be stored for all numerical columns"
+    )
 
     # Check cat_dims and cat_idxs
-    assert len(encoder.cat_idxs) == len(
-        encoder.categorical_columns
-    ), "cat_idxs length should match number of categorical columns"
-    assert len(encoder.cat_dims) == len(
-        encoder.categorical_columns
-    ), "cat_dims length should match number of categorical columns"
+    assert len(encoder.cat_idxs) == len(encoder.categorical_columns), (
+        "cat_idxs length should match number of categorical columns"
+    )
+    assert len(encoder.cat_dims) == len(encoder.categorical_columns), (
+        "cat_dims length should match number of categorical columns"
+    )
 
 
 def test_transform(encoder, dummy_df):
@@ -113,22 +113,22 @@ def test_transform(encoder, dummy_df):
 
     df_transformed = encoder.transform(df_test)
 
-    assert (
-        not df_transformed.isnull().any().any()
-    ), "There should be no missing values after transform"
+    assert not df_transformed.isnull().any().any(), (
+        "There should be no missing values after transform"
+    )
 
     # Unseen 'Z' should be mapped to the first class (usually 0) or handled gracefully
     # Based on code: df.loc[unknown_mask, col] = le.classes_[0]
     le_cat1 = encoder.label_encoders["cat1"]
-    assert (
-        df_transformed.loc[1, "cat1"] == le_cat1.transform([le_cat1.classes_[0]])[0]
-    ), "Unseen category should be mapped to first known class"
+    assert df_transformed.loc[1, "cat1"] == le_cat1.transform([le_cat1.classes_[0]])[0], (
+        "Unseen category should be mapped to first known class"
+    )
 
     # Numerical missing should be median from train
     expected_median = dummy_df["num1"].median()
-    assert (
-        df_transformed.loc[2, "num1"] == expected_median
-    ), "Missing numerical value should be filled with median from training data"
+    assert df_transformed.loc[2, "num1"] == expected_median, (
+        "Missing numerical value should be filled with median from training data"
+    )
 
 
 def test_state_management(encoder, dummy_df):
@@ -141,13 +141,13 @@ def test_state_management(encoder, dummy_df):
     new_encoder = FeatureEncoder(verbose=False)
     new_encoder.load_state(state)
 
-    assert (
-        new_encoder.categorical_columns == encoder.categorical_columns
-    ), "Categorical columns should match after loading state"
-    assert (
-        new_encoder.numerical_columns == encoder.numerical_columns
-    ), "Numerical columns should match after loading state"
+    assert new_encoder.categorical_columns == encoder.categorical_columns, (
+        "Categorical columns should match after loading state"
+    )
+    assert new_encoder.numerical_columns == encoder.numerical_columns, (
+        "Numerical columns should match after loading state"
+    )
     assert new_encoder.cat_dims == encoder.cat_dims, "cat_dims should match after loading state"
-    assert (
-        new_encoder.numerical_medians["num1"] == encoder.numerical_medians["num1"]
-    ), "Numerical medians should match after loading state"
+    assert new_encoder.numerical_medians["num1"] == encoder.numerical_medians["num1"], (
+        "Numerical medians should match after loading state"
+    )
