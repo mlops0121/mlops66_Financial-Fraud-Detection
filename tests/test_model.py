@@ -43,6 +43,14 @@ class TestModelPrediction:
         # Create and fit model with minimal training
         model = trainer._create_model()
 
+        # Ensure categorical features are within bounds
+        # Added due to index errors on Linux and macOS CI environments
+        cat_idxs = sample_preprocessed_data["cat_idxs"]
+        cat_dims = sample_preprocessed_data["cat_dims"]
+        for idx, dim in zip(cat_idxs, cat_dims):
+            for split in ["X_train", "X_valid", "X_test"]:
+                sample_preprocessed_data[split][:, idx] %= dim  # Normalize indices to valid range
+
         # Quick fit (1 epoch)
         model.fit(
             X_train=sample_preprocessed_data["X_train"],
@@ -65,6 +73,14 @@ class TestModelPrediction:
         """Test model probability prediction shape."""
         trainer = TabNetTrainer(mock_config, sample_preprocessed_data, verbose=False)
         model = trainer._create_model()
+
+        # Ensure categorical features are within bounds
+        # Added due to index errors on Linux and macOS CI environments
+        cat_idxs = sample_preprocessed_data["cat_idxs"]
+        cat_dims = sample_preprocessed_data["cat_dims"]
+        for idx, dim in zip(cat_idxs, cat_dims):
+            for split in ["X_train", "X_valid", "X_test"]:
+                sample_preprocessed_data[split][:, idx] %= dim  # Normalize indices to valid range
 
         # Quick fit
         model.fit(
