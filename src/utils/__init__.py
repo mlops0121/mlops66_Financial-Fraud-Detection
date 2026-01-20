@@ -1,15 +1,15 @@
 """Utility Functions Module"""
 
-from .helpers import optimize_memory, find_latest_checkpoint
-from .logger import get_logger, setup_logging, LoggerMixin
-from .profiling import timer, profile, Timer
-from .wandb_utils import init_wandb, log_metrics, log_model, finish_wandb, WandbCallback
+from .helpers import find_latest_checkpoint, optimize_memory
+from .logger import LoggerMixin, get_logger, setup_logging
+from .profiling import Timer, profile, timer
+from .wandb_utils import WandbCallback, finish_wandb, init_wandb, log_metrics, log_model
 
 __all__ = [
-    "optimize_memory", 
+    "optimize_memory",
     "find_latest_checkpoint",
     "get_logger",
-    "setup_logging", 
+    "setup_logging",
     "LoggerMixin",
     "timer",
     "profile",
@@ -20,4 +20,3 @@ __all__ = [
     "finish_wandb",
     "WandbCallback",
 ]
-
