@@ -1,6 +1,6 @@
-"""
-ONNX Model Export Script
-Converts TabNet model to ONNX format for faster inference
+"""ONNX Model Export Script.
+
+Converts TabNet model to ONNX format for faster inference.
 
 Usage:
     python export_onnx.py
@@ -25,13 +25,13 @@ logger = get_logger(__name__)
 def export_to_onnx(
     model_path: str = None, output_path: str = "tabnet_fraud_model.onnx", verify: bool = True
 ):
-    """
-    Export TabNet model to ONNX format.
+    """Export TabNet model to ONNX format.
 
     Args:
         model_path: Path to trained TabNet model (.zip)
         output_path: Output path for ONNX model
         verify: Whether to verify the exported model
+
     """
     logger.info("=" * 60)
     logger.info("     ONNX Model Export")
@@ -139,6 +139,7 @@ def export_to_onnx(
 
 
 def main():
+    """Main export entry point."""
     parser = argparse.ArgumentParser(description="Export TabNet model to ONNX")
     parser.add_argument("--model-path", type=str, default=None, help="Path to TabNet model (.zip)")
     parser.add_argument(

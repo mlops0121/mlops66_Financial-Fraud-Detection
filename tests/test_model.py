@@ -1,5 +1,4 @@
-"""
-Unit tests for model construction and training.
+"""Unit tests for model construction and training.
 
 Tests cover:
 - TabNetTrainer class

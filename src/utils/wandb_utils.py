@@ -1,6 +1,6 @@
-"""
-Weights & Biases Integration
-Experiment tracking and logging utilities
+"""Weights & Biases Integration.
+
+Experiment tracking and logging utilities.
 """
 
 from typing import Any, Dict, Optional
@@ -33,8 +33,7 @@ def init_wandb(
     name: Optional[str] = None,
     tags: Optional[list] = None,
 ) -> bool:
-    """
-    Initialize Weights & Biases run.
+    """Initialize Weights & Biases run.
 
     Args:
         cfg: Hydra config object
@@ -44,6 +43,7 @@ def init_wandb(
 
     Returns:
         bool: True if initialized successfully
+
     """
     wandb = _get_wandb()
     if wandb is None:
@@ -81,12 +81,12 @@ def init_wandb(
 
 
 def log_metrics(metrics: Dict[str, Any], step: Optional[int] = None):
-    """
-    Log metrics to W&B.
+    """Log metrics to W&B.
 
     Args:
         metrics: Dictionary of metric names and values
         step: Optional step number
+
     """
     wandb = _get_wandb()
     if wandb is None or wandb.run is None:
@@ -96,12 +96,12 @@ def log_metrics(metrics: Dict[str, Any], step: Optional[int] = None):
 
 
 def log_model(model_path: str, name: str = "model"):
-    """
-    Log model artifact to W&B.
+    """Log model artifact to W&B.
 
     Args:
         model_path: Path to model file
         name: Artifact name
+
     """
     wandb = _get_wandb()
     if wandb is None or wandb.run is None:
@@ -122,13 +122,13 @@ def finish_wandb():
 
 
 class WandbCallback:
-    """
-    Callback for logging training progress to W&B.
+    """Callback for logging training progress to W&B.
 
     Compatible with pytorch-tabnet callback interface.
     """
 
     def __init__(self):
+        """Initialize callback."""
         self.wandb = _get_wandb()
 
     def on_epoch_end(self, epoch: int, logs: Dict[str, float] = None):

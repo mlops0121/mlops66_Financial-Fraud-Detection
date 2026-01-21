@@ -65,6 +65,7 @@ def predict_test(limit: int = 5):
 
     Returns:
         Dict with count and a list of predictions.
+
     """
     ensure_loaded()
 

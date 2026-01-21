@@ -1,5 +1,4 @@
-"""
-Unit tests for data loading and preprocessing.
+"""Unit tests for data loading and preprocessing.
 
 Tests cover:
 - DataLoader class functionality

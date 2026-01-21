@@ -1,5 +1,5 @@
-"""
-Profile Training Script
+"""Profile Training Script.
+
 Run profiling on the training pipeline to identify bottlenecks.
 
 Usage:
@@ -22,6 +22,7 @@ logger = get_logger(__name__)
 
 
 def main():
+    """Main profiling entry point."""
     parser = argparse.ArgumentParser(description="Profile training pipeline")
     parser.add_argument("--dry-run", action="store_true", help="Quick test without full training")
     parser.add_argument(

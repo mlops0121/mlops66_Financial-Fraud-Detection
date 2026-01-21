@@ -1,5 +1,4 @@
-"""
-IEEE-CIS Fraud Detection - TabNet Training Entry Script
+"""IEEE-CIS Fraud Detection - TabNet Training Entry Script.
 
 Usage:
     python train.py                          # Run with default config
@@ -34,6 +33,7 @@ class HydraConfig:
     """Adapter class to make Hydra config compatible with existing code."""
 
     def __init__(self, cfg: DictConfig):
+        """Initialize configuration adapter."""
         self.cfg = cfg
 
         # Path Configuration
@@ -85,7 +85,6 @@ class HydraConfig:
 @hydra.main(version_base=None, config_path="configs", config_name="config")
 def main(cfg: DictConfig) -> float:
     """Main training workflow with Hydra configuration."""
-
     # Setup logging
     setup_logging(cfg)
 

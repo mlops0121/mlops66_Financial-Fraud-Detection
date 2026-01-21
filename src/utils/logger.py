@@ -1,6 +1,6 @@
-"""
-Logging Utilities
-Centralized logging configuration for the project
+"""Logging Utilities.
+
+Centralized logging configuration for the project.
 """
 
 import logging
@@ -15,8 +15,7 @@ def get_logger(
     log_file: Optional[str] = None,
     log_format: Optional[str] = None,
 ) -> logging.Logger:
-    """
-    Get a configured logger instance.
+    """Get a configured logger instance.
 
     Args:
         name: Logger name (usually __name__)
@@ -26,6 +25,7 @@ def get_logger(
 
     Returns:
         logging.Logger: Configured logger instance
+
     """
     logger = logging.getLogger(name)
 
@@ -61,14 +61,14 @@ def get_logger(
 
 
 def setup_logging(cfg) -> logging.Logger:
-    """
-    Setup logging from Hydra config.
+    """Setup logging from Hydra config.
 
     Args:
         cfg: Hydra configuration object
 
     Returns:
         logging.Logger: Root logger
+
     """
     log_level = getattr(logging, cfg.logging.level.upper(), logging.INFO)
     log_format = cfg.logging.format

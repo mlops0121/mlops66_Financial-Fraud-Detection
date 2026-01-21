@@ -1,6 +1,4 @@
-"""
-Pytest fixtures and shared test resources.
-"""
+"""Pytest fixtures and shared test resources."""
 
 import sys
 from pathlib import Path

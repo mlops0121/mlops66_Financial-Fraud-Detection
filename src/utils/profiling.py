@@ -1,6 +1,6 @@
-"""
-Profiling Utilities
-Tools for performance profiling and optimization
+"""Profiling Utilities.
+
+Tools for performance profiling and optimization.
 """
 
 import cProfile
@@ -17,8 +17,7 @@ logger = get_logger(__name__)
 
 
 def timer(func: Callable) -> Callable:
-    """
-    Decorator to measure function execution time.
+    """Decorator to measure function execution time.
 
     Usage:
         @timer
@@ -41,8 +40,7 @@ def timer(func: Callable) -> Callable:
 def profile(
     output_file: Optional[str] = None, sort_by: str = "cumulative", lines: int = 30
 ) -> Callable:
-    """
-    Decorator to profile function with cProfile.
+    """Decorator to profile function with cProfile.
 
     Args:
         output_file: Optional path to save profile stats
@@ -53,6 +51,7 @@ def profile(
         @profile(output_file='profile_stats.prof')
         def my_function():
             ...
+
     """
 
     def decorator(func: Callable) -> Callable:
@@ -88,8 +87,7 @@ def profile(
 
 
 class Timer:
-    """
-    Context manager for timing code blocks.
+    """Context manager for timing code blocks.
 
     Usage:
         with Timer("data loading"):
@@ -97,22 +95,29 @@ class Timer:
     """
 
     def __init__(self, name: str = "block"):
+        """Initialize timer.
+
+        Args:
+            name: Timer name
+
+        """
         self.name = name
         self.start_time = None
         self.elapsed = None
 
     def __enter__(self):
+        """Enter context manager."""
         self.start_time = time.perf_counter()
         return self
 
     def __exit__(self, *args):
+        """Exit context manager."""
         self.elapsed = time.perf_counter() - self.start_time
         logger.info(f"⏱️ {self.name} took {self.elapsed:.2f} seconds")
 
 
 def profile_training(cfg, dry_run: bool = False) -> dict:
-    """
-    Profile the training pipeline.
+    """Profile the training pipeline.
 
     Args:
         cfg: Hydra config
@@ -120,6 +125,7 @@ def profile_training(cfg, dry_run: bool = False) -> dict:
 
     Returns:
         dict: Timing statistics
+
     """
     from ..config.settings import Config
     from ..features.preprocessor import FraudPreprocessor

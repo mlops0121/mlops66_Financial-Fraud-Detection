@@ -1,6 +1,6 @@
-"""
-TabNet Trainer Module
-Encapsulates TabNet model creation, training, saving, and loading logic
+"""TabNet Trainer Module.
+
+Encapsulates TabNet model creation, training, saving, and loading logic.
 """
 
 from typing import Any, Dict, Optional
@@ -17,14 +17,15 @@ logger = get_logger(__name__)
 
 
 class TabNetTrainer:
-    """TabNet Model Trainer"""
+    """TabNet Model Trainer."""
 
     def __init__(self, config, data: Dict[str, Any], verbose: bool = True):
-        """
+        """Initialize TabNetTrainer.
+
         Args:
-            config: Configuration object
-            data: Preprocessed data dictionary
-            verbose: Whether to print detailed information
+        config: Configuration object
+        data: Preprocessed data dictionary
+        verbose: Whether to print detailed information.
         """
         self.config = config
         self.data = data
@@ -32,12 +33,12 @@ class TabNetTrainer:
         self.model: Optional[TabNetClassifier] = None
 
     def _log(self, message: str):
-        """Log message using logging module"""
+        """Log message using logging module."""
         if self.verbose:
             logger.info(message)
 
     def _create_model(self):
-        """Create a new TabNet model"""
+        """Create a new TabNet model."""
         return TabNetClassifier(
             cat_idxs=self.data["cat_idxs"],
             cat_dims=self.data["cat_dims"],
@@ -60,11 +61,11 @@ class TabNetTrainer:
         )
 
     def train(self):
-        """
-        Train model (supports resuming from checkpoint)
+        """Train model (supports resuming from checkpoint).
 
         Returns:
             TabNetClassifier: Trained model
+
         """
         self._log("\n" + "=" * 60)
         self._log("              Model Training")
@@ -161,13 +162,13 @@ class TabNetTrainer:
         return self.model
 
     def save(self, path=None):
-        """Save model"""
+        """Save model."""
         path = path or str(self.config.MODEL_PATH)
         self.model.save_model(path)
         self._log(f"\nModel saved to: {path}")
 
     def load(self, path=None):
-        """Load model"""
+        """Load model."""
         path = path or str(self.config.MODEL_PATH) + ".zip"
         self.model = TabNetClassifier()
         self.model.load_model(path)
@@ -175,9 +176,9 @@ class TabNetTrainer:
         return self.model
 
     def predict(self, X):
-        """Predict classes"""
+        """Predict classes."""
         return self.model.predict(X)
 
     def predict_proba(self, X):
-        """Predict probabilities"""
+        """Predict probabilities."""
         return self.model.predict_proba(X)

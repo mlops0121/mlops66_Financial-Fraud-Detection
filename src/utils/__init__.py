@@ -1,4 +1,4 @@
-"""Utility Functions Module"""
+"""Utility Functions Module."""
 
 from .helpers import find_latest_checkpoint, optimize_memory
 from .logger import LoggerMixin, get_logger, setup_logging

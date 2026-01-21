@@ -1,5 +1,4 @@
-"""
-IEEE-CIS Fraud Detection - Data Preprocessing Entry Script
+"""IEEE-CIS Fraud Detection - Data Preprocessing Entry Script.
 
 Usage:
     python preprocess.py                  # Preprocess training data
@@ -28,6 +27,7 @@ class HydraConfig:
     """Adapter class to make Hydra config compatible with existing code."""
 
     def __init__(self, cfg: DictConfig):
+        """Initialize configuration adapter."""
         self.cfg = cfg
 
         # Path Configuration
@@ -120,7 +120,6 @@ def preprocess_test(config):
 @hydra.main(version_base=None, config_path="configs", config_name="config")
 def main(cfg: DictConfig):
     """Main preprocessing entry point with Hydra configuration."""
-
     # Setup logging
     setup_logging(cfg)
 

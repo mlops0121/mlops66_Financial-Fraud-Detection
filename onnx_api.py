@@ -1,6 +1,6 @@
-"""
-ONNX Inference API
-FastAPI application for fraud detection using ONNX Runtime
+"""ONNX Inference API.
+
+FastAPI application for fraud detection using ONNX Runtime.
 
 Usage:
     uvicorn onnx_api:app --host 0.0.0.0 --port 8001
@@ -117,8 +117,7 @@ def health():
 
 @app.post("/predict", response_model=PredictionResponse)
 def predict(data: TransactionData):
-    """
-    Predict fraud probability for a single transaction.
+    """Predict fraud probability for a single transaction.
 
     Input: feature vector as dictionary
     Output: fraud probability and classification
@@ -150,8 +149,7 @@ def predict(data: TransactionData):
 
 @app.post("/predict_batch", response_model=BatchPredictionResponse)
 def predict_batch(data: BatchTransactionData):
-    """
-    Predict fraud probability for multiple transactions.
+    """Predict fraud probability for multiple transactions.
 
     Input: list of feature vectors
     Output: list of predictions

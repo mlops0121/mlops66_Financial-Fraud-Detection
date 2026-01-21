@@ -1,6 +1,6 @@
-"""
-BentoML Service for Fraud Detection
-Provides production-ready ML service with BentoML
+"""BentoML Service for Fraud Detection.
+
+Provides production-ready ML service with BentoML.
 
 Usage:
     # Save model to BentoML
@@ -80,8 +80,7 @@ if BENTOML_AVAILABLE:
 
         @svc.api(input=NumpyNdarray(), output=JSON())
         async def predict(input_data: np.ndarray) -> dict:
-            """
-            Predict fraud probability.
+            """Predict fraud probability.
 
             Input: numpy array of shape (n_samples, n_features)
             Output: predictions with probabilities
@@ -117,6 +116,7 @@ if BENTOML_AVAILABLE:
             }
 
         def get_risk_level(prob: float) -> str:
+            """Determine risk level based on fraud probability."""
             if prob >= 0.8:
                 return "HIGH"
             elif prob >= 0.5:
@@ -135,6 +135,7 @@ if BENTOML_AVAILABLE:
 
 
 def main():
+    """Main entry point."""
     parser = argparse.ArgumentParser(description="BentoML Fraud Detection Service")
     parser.add_argument("action", choices=["save", "info"], help="Action to perform")
     args = parser.parse_args()
