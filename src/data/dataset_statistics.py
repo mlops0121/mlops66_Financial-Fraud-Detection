@@ -150,8 +150,6 @@ class DatasetStatistics:
             f.write(f"Fraud cases: {np.sum(y_train)}\n")
             f.write(f"Non-fraud cases: {len(y_train) - np.sum(y_train)}\n")
             f.write("\n")
-            X_test = self.data["X_test"]
-            y_test = self.data["y_test"]
             f.write("====== TEST SET STATISTICS ======\n")
             f.write(f"Test samples: {X_test.shape[0]}\n")
             f.write(f"Features: {X_test.shape[1]}\n")
