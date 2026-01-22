@@ -12,6 +12,8 @@ on:
         paths:
         - 'data/**'
         - '*.dvc'
+    workflow_dispatch:
+      
 jobs:
     data-check:
         runs-on: ${{ matrix.os }}
