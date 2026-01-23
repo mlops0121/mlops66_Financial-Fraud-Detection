@@ -425,9 +425,9 @@ We used **Vertex AI Custom Training** to train our TabNet model in the cloud, wh
 > **stored. You can take inspiration from [this figure](figures/registry.png).**
 >
 
-[GCP Bucket data](figures/MLOPS_Artifact_API.png)
+[GCP Artifact API](figures/MLOPS_Artifact_API.png)
 
-[GCP Bucket models](figures/MLOPS_Artifact_Training.png)
+[GCP Artifact Training](figures/MLOPS_Artifact_Training.png)
 
 ### Question 21
 
