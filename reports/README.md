@@ -394,7 +394,7 @@ For local debugging, we used the VS Code debugger to step through the `preproces
 1.  **Google Cloud Storage (Buckets):** For storing the raw data (DVC remote) and model artifacts.
 2.  **Artifact Registry:** To store our Docker images pushed by Cloud Build.
 3.  **Cloud Build:** To automatically build and push Docker images upon pushes to the main branch.
-4.  **Cloud Run:** To host our FastAPI application as a serverless service.
+4.  **Vertex AI:** For training our TabNet model using custom training jobs with GPU support.
 
 ### Question 18
 
@@ -406,10 +406,9 @@ For local debugging, we used the VS Code debugger to step through the `preproces
 > Example:
 > *We used the compute engine to run our ... . We used instances with the following hardware: ... and we started the*
 > *using a custom container: ...*
->
-> Answer: !!!! TO DO !!!!
 
-We used Compute Engine VM instances to perform the heavy training of the TabNet model, as our local machines lacked sufficient GPU power. We provisioned a VM with a T4 GPU, cloned the repository, pulled the data via DVC, and executed the training script. We used `tmux` to keep the session alive during the long training process.
+
+We used **Vertex AI Custom Training** to train our TabNet model in the cloud, which runs on Compute Engine infrastructure. Vertex AI automatically provisions GPU-enabled VMs and manages the lifecycle of these instances. We created a training Docker image (`Dockerfile.train`) based on PyTorch and used `vertex_train.py` to submit custom training jobs. The training container automatically downloads data from our GCP bucket, runs the training script, and uploads the trained model back to the bucket.
 
 ### Question 19
 
@@ -435,10 +434,11 @@ We used Compute Engine VM instances to perform the heavy training of the TabNet 
 
 > **Upload 1-2 images of your GCP cloud build history, so we can see the history of the images that have been build in**
 > **your project. You can take inspiration from [this figure](figures/build.png).**
->
-> Answer: !!!! TO DO !!!!
 
-`![Cloud Build](figures/build.png)`
+
+`![Cloud Build](figures/MLOPS_Cloudbuild.png)`
+
+We initially implemented Cloud Build with a `cloudbuild.yaml` configuration file to automatically build and push Docker images to Artifact Registry on code pushes. However, we later removed this setup because we already had Docker image builds integrated into our GitHub Actions workflows (`deploy_cloudrun.yaml` and `api_tests.yaml`). Having both Cloud Build and GitHub Actions build images would have been redundant and added unnecessary complexity. We chose to keep the Docker builds in GitHub Actions to maintain all CI/CD workflows in one place, which simplifies monitoring and reduces the number of services to manage. The screenshot above shows the Cloud Build history from when we tested the implementation.
 
 ### Question 22
 
@@ -453,7 +453,7 @@ We used Compute Engine VM instances to perform the heavy training of the TabNet 
 >
 > Answer: !!!! TO DO !!!!
 
-Yes, we trained on **Compute Engine**. We preferred this over Vertex AI Custom Jobs for this project because it gave us full interactive control over the environment. We could debug `CUDA out of memory` errors in real-time by SSH-ing into the machine, rather than waiting for logs from a managed job.
+Yes, we trained our model in the cloud using **Vertex AI Custom Training**. We created a training Docker image (`Dockerfile.train`) with GPU support (PyTorch with CUDA 11.8), and developed `vertex_train.py` to submit custom training jobs. The training workflow uses `train_entrypoint.sh` which automatically downloads training data from our GCP bucket, executes the training script, and uploads the trained model and preprocessor back to the bucket. We chose Vertex AI over manually managing Compute Engine VMs because it provides managed infrastructure, automatic resource provisioning, better integration with our MLOps pipeline, and eliminates the need for SSH access and session management.
 
 ## Deployment
 
