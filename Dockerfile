@@ -40,13 +40,13 @@ RUN sed -i 's/\r$//' docker-entrypoint.sh && chmod +x docker-entrypoint.sh
 # Expose port
 EXPOSE 8000
 
+
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/')" || exit 1
-
 # Entrypoint handles GCP download if configured
 ENTRYPOINT ["./docker-entrypoint.sh"]
 
 # Default command: run the API
 #CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
-CMD ["uvicorn", "api.new_main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uvicorn", "api.new_main:app", "--host", "0.0.0.0", "--port", "8000"]
