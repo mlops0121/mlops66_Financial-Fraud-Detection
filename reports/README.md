@@ -534,7 +534,7 @@ We rely on the built-in monitoring tools of **Cloud Run**, which provide metrics
 >
 > Answer:
 
-We used approximately **$ ??** in credits. The primary cost driver was the GPU-enabled Compute Engine instance used for development and training. Cloud Run costs were low due to its scale-to-zero nature, and Storage costs were negligible. Working in the cloud significantly accelerated our training time compared to local CPUs.
+We used approximately **$0** in credits. We leveraged the Google Cloud Free Tier and Cloud Run's scale-to-zero capability to keep costs negligible. Storage costs were also minimal. Working in the cloud significantly accelerated our deployment workflow compared to a purely local setup."
 
 ### Question 28
 
@@ -569,7 +569,7 @@ We implemented two significant extensions:
 >
 > Answer:
 
-[Architecture Overview](figures/overview.png)
+[Overview](figures/overview.png)
 
 The diagram illustrates our flow:
 1.  **Dev:** Code pushed to GitHub triggers Actions (Tests).
