@@ -338,7 +338,7 @@ We secured reproducibility by pinning exact library versions in `requirements.tx
 > *As seen in the second image we are also tracking ... and ...*
 >
 > Answer:
-
+!TODO LINXIN
 `![WandB Metrics](figures/wandb.png)`
 
 We tracked metrics such as Training Loss, Validation AUC, and Learning Rate. The visualization helped us identify that the model converges quickly (around epoch 20) and allowed us to tune the `PATIENCE` parameter for early stopping to save resources.
@@ -416,18 +416,20 @@ We used Compute Engine VM instances to perform the heavy training of the TabNet 
 > **Insert 1-2 images of your GCP bucket, such that we can see what data you have stored in it.**
 > **You can take inspiration from [this figure](figures/bucket.png).**
 >
-> Answer: !!!! TO DO !!!!
 
-`![GCP Bucket](figures/bucket.png)`
+`![GCP Bucket data](figures/MLOPS_Bucket_data.png)`
+
+`![GCP Bucket models](figures/MLOPS_Bucket_models.png)`
 
 ### Question 20
 
 > **Upload 1-2 images of your GCP artifact registry, such that we can see the different docker images that you have**
 > **stored. You can take inspiration from [this figure](figures/registry.png).**
 >
-> Answer: !!!! TO DO !!!!
 
-`![Artifact Registry](figures/registry.png)`
+`![GCP Bucket data](figures/MLOPS_Artifact_API.png)`
+
+`![GCP Bucket models](figures/MLOPS_Artifact_Training.png)`
 
 ### Question 21
 
